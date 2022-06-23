@@ -114,6 +114,7 @@ $readingProgressImage: linear-gradient(
   overflow: hidden;
   height: 2px;
   width: 100%;
+  top: 0;
   .progress {
     width: 100%;
     height: 100%;
