@@ -15,6 +15,8 @@ add reading progress bar for vuepress
    <a href="https://github.com/licc12/vuepress-plugin-reading-progress-v2/blob/main/LICENSE" target="_blank"><img alt="GitHub license" src="https://www.npmjs.com/package/vuepress-plugin-reading-progress-v2"></a>
 </p>
 
+![vuepress-plugin-reading-progress-v2](https://ououe.com/img/vuepress_plugin_reading_progress.gif)
+
 ---
 
 ## Dependencies vuepress version
