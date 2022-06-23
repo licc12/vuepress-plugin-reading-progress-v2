@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-reading-progress-v2",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "type": "commonjs",
   "description": "A reading progress bar plugin for VuePress",

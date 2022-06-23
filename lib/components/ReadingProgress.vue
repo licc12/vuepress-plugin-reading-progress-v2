@@ -1,6 +1,6 @@
 <template>
   <ClientOnly>
-    <div v-if="$readingShow" :class="$readingShow" class="reading-progress">
+    <div v-if="isShowProgress" :class="overrideClass" class="reading-progress">
       <div :style="progressStyle" class="progress"></div>
     </div>
   </ClientOnly>
@@ -9,59 +9,64 @@
 <script>
 export default {
   name: 'ReadingProgress',
-  data () {
+  data() {
     return {
       readingTop: 0,
       readingHeight: 1,
       progressStyle: null,
       transform: undefined,
-      running: false
+      running: false,
+      isShowProgress: IS_SHOW_PROGRESS,
+      overrideClass: OVERRIDE_CLASS,
+      fixed: FIXED,
+      filterPages: FILTER_PAGES,
     }
   },
-  watch: {
-    $readingShow () {
-      this.progressStyle = this.getProgressStyle()
-      this.$readingShow && window.addEventListener('scroll', this.base)
-    }
-  },
-  mounted () {
+  mounted() {
     this.transform = this.getTransform()
     this.progressStyle = this.getProgressStyle()
-    this.$readingShow && window.addEventListener('scroll', this.base)
+    this.isShowProgress && window.addEventListener('scroll', this.base)
   },
-  beforeDestroy () {
-    this.$readingShow && window.removeEventListener('scroll', this.base)
+  beforeDestroy() {
+    this.isShowProgress && window.removeEventListener('scroll', this.base)
   },
   methods: {
     base() {
-      if (!this.running) {
+      const isFilterPage = this.filterPages.includes(location.pathname)
+      if (!this.running && !isFilterPage) {
         this.running = true
-        requestAnimationFrame(this.getReadingBase)
+        this.getReadingBase()
       }
     },
-    getReadingBase () {
+    getReadingBase() {
       this.readingHeight = this.getReadingHeight() - this.getScreenHeight()
       this.readingTop = this.getReadingTop()
       this.progressStyle = this.getProgressStyle()
       this.running = false
     },
-    getReadingHeight () {
+    getReadingHeight() {
       return Math.max(document.body.scrollHeight, document.body.offsetHeight, 0)
     },
-    getScreenHeight () {
+    getScreenHeight() {
       return Math.max(window.innerHeight, document.documentElement.clientHeight, 0)
     },
-    getReadingTop () {
+    getReadingTop() {
       return Math.max(window.pageYOffset, document.documentElement.scrollTop, 0)
     },
-    getTransform () {
+    getTransform() {
       const div = document.createElement('div')
-      const transformList = ['transform', '-webkit-transform', '-moz-transform', '-o-transform', '-ms-transform']
-      return transformList.find(item => item in div.style) || undefined
+      const transformList = [
+        'transform',
+        '-webkit-transform',
+        '-moz-transform',
+        '-o-transform',
+        '-ms-transform',
+      ]
+      return transformList.find((item) => item in div.style) || undefined
     },
-    getProgressStyle () {
+    getProgressStyle() {
       const progress = this.readingTop / this.readingHeight
-      switch (this.$readingShow) {
+      switch (this.fixed) {
         case 'top':
         case 'bottom':
           if (this.transform) {
@@ -82,52 +87,72 @@ export default {
           return null
           break
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style lang="stylus" scoped>
-$readingBgColor ?= transparent
-$readingZIndex ?= 1000
-$readingSize ?= 3px
-$readingProgressColor ?= $accentColor
-$readingProgressImage ?= none
+<style lang="scss" scoped>
+$readingBgColor: transparent;
+$readingZIndex: 1000;
+$readingSize: 6px;
+$readingProgressColor: #3eaf7c;
+$readingProgressImage: linear-gradient(
+  -120deg,
+  #e50743 0%,
+  #f9870f 15%,
+  #e8ed30 30%,
+  #3fa62e 45%,
+  #3bb4d7 60%,
+  #2f4d9e 75%,
+  #71378a 80%
+);
+.reading-progress {
+  position: fixed;
+  z-index: $readingZIndex;
+  background: $readingBgColor;
+  overflow: hidden;
+  height: 2px;
+  width: 100%;
+  .progress {
+    width: 100%;
+    height: 100%;
+    background: $readingProgressColor;
+    background-image: $readingProgressImage;
+    transform-origin: 0% 0%;
+    transition: transform 0.2s ease-out;
+  }
+}
 
-.reading-progress
-  position fixed
-  z-index $readingZIndex
-  background $readingBgColor
-  overflow hidden
-  .progress
-    width 100%
-    height 100%
-    background $readingProgressColor
-    background-image $readingProgressImage
-    transform-origin 0% 0%
-    transition: transform .2s ease-out
-.top
-  top 0
-  left 0
-  right 0
-  width 100%
-  height $readingSize
-.bottom
-  bottom 0
-  left 0
-  right 0
-  width 100%
-  height $readingSize
-.left
-  left 0
-  top 0
-  bottom 0
-  width $readingSize
-  height 100%
-.right
-  right 0
-  top 0
-  bottom 0
-  width $readingSize
-  height 100%
+.top {
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: $readingSize;
+}
+
+.bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: $readingSize;
+}
+
+.left {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: $readingSize;
+  height: 100%;
+}
+
+.right {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: $readingSize;
+  height: 100%;
+}
 </style>

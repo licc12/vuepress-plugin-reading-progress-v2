@@ -1,55 +1,16 @@
 const { path } = require("@vuepress/utils");
 
-function checkRegularPath (regularPath, readingDir, fixed) {
-  if (readingDir === null) {
-    return fixed
-  } else if (typeof readingDir === 'string') {
-    return setConfig(regularPath, readingDir, fixed)
-  } else if (Array.isArray(readingDir)) {
-    for (let i = 0; i < readingDir.length; i++) {
-      const item = readingDir[i]
-      const isShow = setConfig(regularPath, item, fixed)
-      if (isShow) return fixed
-    }
-    return false
-  } else if (readingDir.constructor === RegExp) {
-    return readingDir.test(regularPath) ? fixed : false
-  } else {
-    for (const key in readingDir) {
-      const item = readingDir[key]
-      const isShow = setConfig(regularPath, key, item)
-      if (isShow) return item
-    }
-    return false
-  }
-}
-
-function setConfig (regularPath, dir, fixed) {
-  return regularPath.includes(dir) ? fixed : false
-}
-
 module.exports = options => {
-  const {
-    readingDir = null,
-    fixed = 'top'
-  } = options
-
   return {
-    extendsPage ($page) {
-      const { regularPath, frontmatter: { readingShow } } = $page
-      let type = fixed
-
-      if (readingShow !== undefined) {
-        type = typeof readingShow === 'boolean' && readingShow
-          ? fixed
-          : readingShow
-      } else if (regularPath) {
-        type = checkRegularPath(regularPath, readingDir, fixed)
-      } else {
-        type = false
-      }
-
-      $page.frontmatter.readingShow = type
+    define: {
+      /** 是否展示进度条 */
+      IS_SHOW_PROGRESS: options.isSHowProgress || true,
+      /** 自定义进度条的class */
+      OVERRIDE_CLASS: options.overrideClass || '',
+      /** 进度条吸附位置:默认 top */
+      FIXED: options.fixed || 'top',
+      /** 过滤哪些页面不展示进度条 */
+      FILTER_PAGES: options.filterPages || [],
     },
     clientAppEnhanceFiles: path.resolve(__dirname, './lib/client.js'),
     clientAppRootComponentFiles: path.resolve(__dirname, './lib/components/ReadingProgress.vue'),
