@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "commonjs",
   "description": "A reading progress bar plugin for VuePress",
-  "author": "tolking <qw13131wang@gmail.com>",
+  "author": "licc12",
   "license": "MIT",
   "repository": {
     "type": "git",
