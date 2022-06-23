@@ -1,0 +1,24 @@
+{
+  "name": "vuepress-plugin-reading-progress-v2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "description": "A reading progress bar plugin for VuePress",
+  "author": "tolking <qw13131wang@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/licc12/vuepress-plugin-reading-progress-v2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/licc12/vuepress-plugin-reading-progress-v2/issues"
+  },
+  "doc": "git+ssh://git@github.com/licc12/vuepress-plugin-reading-progress-v2#readme",
+  "keywords": [
+    "vuepress",
+    "plugin",
+    "reading-progress",
+    "reading",
+    "progress"
+  ]
+}
