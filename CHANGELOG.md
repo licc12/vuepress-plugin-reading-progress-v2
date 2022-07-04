@@ -2,6 +2,11 @@
 
 [README](README.md) | [CHANGELOG](CHANGELOG.md)
 
+## 1.1.3
+
+-  更新 license 路径
+-  更新 readme 文档
+
 ## 1.1.0
 
 -  修复已知 bug
